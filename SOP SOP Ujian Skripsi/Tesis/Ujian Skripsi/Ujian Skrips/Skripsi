@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOP Ujian Skripsi/Tesis FISIP Untad - FINAL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe0b2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(255, 102, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #FF6600 0%, #FF8533 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .revision-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .tabs {
+            display: flex;
+            background: #fff3e6;
+            border-bottom: 3px solid #FF6600;
+            overflow-x: auto;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #fff3e6;
+            border: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #FF6600;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .tab:hover {
+            background: #ffe0b2;
+        }
+
+        .tab.active {
+            background: #FF6600;
+            color: white;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .flowchart-section {
+            display: none;
+        }
+
+        .flowchart-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .flow-item {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .flow-box {
+            background: white;
+            border: 3px solid #FF6600;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .flow-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 102, 0, 0.25);
+            border-color: #FF8533;
+        }
+
+        .flow-box.start {
+            background: linear-gradient(135deg, #FF6600 0%, #FF8533 100%);
+            color: white;
+            border: none;
+        }
+
+        .flow-box.end {
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            color: white;
+            border: none;
+        }
+
+        .flow-number {
+            display: inline-block;
+            background: #FF6600;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 15px;
+            box-shadow: 0 2px 8px rgba(255, 102, 0, 0.3);
+        }
+
+        .flow-text {
+            flex: 1;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+
+        .flow-box.start .flow-number,
+        .flow-box.end .flow-number {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 30px solid #FF6600;
+            margin: 0 auto;
+        }
+
+        .actor-label {
+            display: inline-block;
+            background: #FFE0B2;
+            color: #FF6600;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .info-box {
+            background: #FFF3E6;
+            border-left: 5px solid #FF6600;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+
+        .info-box h3 {
+            color: #FF6600;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-box li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .info-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #FF6600;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .tim-penguji-box {
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFE0B2 100%);
+            border: 3px solid #FF6600;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.1);
+        }
+
+        .tim-penguji-box h4 {
+            color: #FF6600;
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tim-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tim-item {
+            background: white;
+            border: 2px solid #FF6600;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tim-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.3);
+            border-color: #FF8533;
+        }
+
+        .tim-number {
+            display: inline-block;
+            background: #FF6600;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            line-height: 40px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .tim-role {
+            font-weight: bold;
+            color: #FF6600;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .tim-desc {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%);
+            border: 2px solid #FF6600;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .highlight-box h4 {
+            color: #FF6600;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .highlight-box p {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .timeline {
+            background: #FFF3E6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #FFE0B2;
+        }
+
+        .timeline h4 {
+            color: #FF6600;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .timeline p {
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .note-box {
+            background: #FFF8F0;
+            border-left: 5px solid #FF6600;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-style: italic;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .tab {
+                font-size: 0.9em;
+                padding: 15px 10px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .flow-box {
+                padding: 15px;
+            }
+
+            .tim-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-box {
+            width: 40px;
+            height: 30px;
+            border-radius: 5px;
+            border: 2px solid #FF6600;
+        }
+
+        .legend-box.start {
+            background: linear-gradient(135deg, #FF6600 0%, #FF8533 100%);
+        }
+
+        .legend-box.process {
+            background: white;
+        }
+
+        .legend-box.end {
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 SOP Ujian Skripsi/Tesis/Non Skripsi</h1>
+            <p>Fakultas Ilmu Sosial dan Ilmu Politik - Universitas Tadulako</p>
+            <div class="revision-badge">✨ REVISI FINAL - Desember 2025</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showSection('proposal')">Ujian Proposal</button>
+            <button class="tab" onclick="showSection('hasil')">Ujian Hasil Penelitian</button>
+            <button class="tab" onclick="showSection('skripsi')">Ujian Skripsi/Tesis</button>
+        </div>
+
+        <div class="content">
+            <!-- UJIAN PROPOSAL -->
+            <div id="proposal" class="flowchart-section active">
+                <div class="tim-penguji-box">
+                    <h4>👥 Komposisi Tim Penguji (5 Orang)</h4>
+                    <div class="tim-grid">
+                        <div class="tim-item">
+                            <div class="tim-number">1</div>
+                            <div class="tim-role">Ketua</div>
+                            <div class="tim-desc">Min. S3/Lektor atau S2/Lektor Kepala</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">2</div>
+                            <div class="tim-role">Sekretaris</div>
+                            <div class="tim-desc">Sesuai kualifikasi</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">3</div>
+                            <div class="tim-role">Penguji</div>
+                            <div class="tim-desc">Sesuai keahlian topik</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">4</div>
+                            <div class="tim-role">Pembimbing Utama</div>
+                            <div class="tim-desc">Pembimbing 1</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">5</div>
+                            <div class="tim-role">Pembimbing Pendamping</div>
+                            <div class="tim-desc">Pembimbing 2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>📚 Syarat Ujian Proposal</h3>
+                    <ul>
+                        <li>Telah menyelesaikan minimal 110 SKS</li>
+                        <li>Draft proposal yang telah disetujui pembimbing</li>
+                        <li>Kartu bimbingan yang telah ditandatangani</li>
+                    </ul>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-box start"></div>
+                        <span>Mulai/Selesai</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box process"></div>
+                        <span>Proses</span>
+                    </div>
+                </div>
+
+                <div class="flowchart">
+                    <div class="flow-item">
+                        <div class="flow-box start">
+                            <span class="flow-number">1</span>
+                            <span class="flow-text">Mahasiswa mengajukan permohonan ujian proposal</span>
+                            <div class="actor-label">👤 Mahasiswa</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">2</span>
+                            <span class="flow-text">Kajur/Koordinator memeriksa dokumen dan menetapkan calon tim penguji (5 orang: Ketua, Sekretaris, Penguji, Pembimbing Utama, Pembimbing Pendamping)</span>
+                            <div class="actor-label">🎓 Kajur/Koor Prodi</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">3</span>
+                            <span class="flow-text">Kajur/Koor meneruskan usulan tim penguji ke POKJA Akademik untuk verifikasi</span>
+                            <div class="actor-label">🎓 Kajur/Koor Prodi</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">4</span>
+                            <span class="flow-text">POKJA Akademik memverifikasi kualifikasi tim penguji sesuai ketentuan</span>
+                            <div class="actor-label">📋 POKJA Akademik</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">5</span>
+                            <span class="flow-text">KABAG meneliti dan menyetujui usulan tim penguji, meneruskan ke Wadek Bidak</span>
+                            <div class="actor-label">👔 KABAG</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">6</span>
+                            <span class="flow-text">Wadek Bidak menerbitkan SK Tim Penguji (5 orang) dan menetapkan jadwal ujian proposal</span>
+                            <div class="actor-label">👨‍💼 Wadek Bidak</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">7</span>
+                            <span class="flow-text">POKJA Akademik menginformasikan jadwal ujian kepada mahasiswa dan tim penguji (minimal 3 hari sebelum pelaksanaan)</span>
+                            <div class="actor-label">📋 POKJA Akademik</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">8</span>
+                            <span class="flow-text">Mahasiswa melaksanakan ujian proposal dengan presentasi dan tanya jawab dengan tim penguji (5 orang)</span>
+                            <div class="actor-label">👤 Mahasiswa</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">9</span>
+                            <span class="flow-text">Tim penguji (5 orang) melakukan penilaian: Tata tulis (15%), Isi proposal (40%), Kemampuan menguasai materi (45%)</span>
+                            <div class="actor-label">👥 Tim Penguji (5 orang)</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">10</span>
+                            <span class="flow-text">Ketua tim penguji mengumumkan hasil ujian dan catatan perbaikan</span>
+                            <div class="actor-label">👥 Tim Penguji</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box end">
+                            <span class="flow-number">11</span>
+                            <span class="flow-text">Mahasiswa melakukan perbaikan proposal (maksimal 1 bulan) dan menyerahkan dengan lembar persetujuan pembimbing</span>
+                            <div class="actor-label">👤 Mahasiswa</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <h4>⏱️ Waktu Proses</h4>
+                    <p>Maksimal 5 hari kerja untuk proses penerbitan SK</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>📊 Komponen Penilaian</h4>
+                    <p>Tata Tulis: 15% | Isi Proposal: 40% | Kemampuan Menguasai Materi: 45%</p>
+                </div>
+
+                <div class="note-box">
+                    ⚠️ Catatan: Tim penguji SAMA untuk ujian proposal, hasil, dan skripsi (konsistensi pembimbingan)
+                </div>
+            </div>
+
+            <!-- UJIAN HASIL PENELITIAN -->
+            <div id="hasil" class="flowchart-section">
+                <div class="tim-penguji-box">
+                    <h4>👥 Komposisi Tim Penguji (5 Orang - Sama dengan Tim Proposal)</h4>
+                    <div class="tim-grid">
+                        <div class="tim-item">
+                            <div class="tim-number">1</div>
+                            <div class="tim-role">Ketua</div>
+                            <div class="tim-desc">Min. S3/Lektor atau S2/Lektor Kepala</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">2</div>
+                            <div class="tim-role">Sekretaris</div>
+                            <div class="tim-desc">Sesuai kualifikasi</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">3</div>
+                            <div class="tim-role">Penguji</div>
+                            <div class="tim-desc">Sesuai keahlian topik</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">4</div>
+                            <div class="tim-role">Pembimbing Utama</div>
+                            <div class="tim-desc">Pembimbing 1</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">5</div>
+                            <div class="tim-role">Pembimbing Pendamping</div>
+                            <div class="tim-desc">Pembimbing 2</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px; text-align: center; color: #FF6600; font-weight: bold; font-style: italic;">
+                        ⚠️ Tim penguji SAMA dengan tim ujian proposal untuk konsistensi pembimbingan
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h3>🔬 Syarat Ujian Hasil Penelitian</h3>
+                    <ul>
+                        <li>Telah menyelesaikan penelitian</li>
+                        <li>Mendapat persetujuan pembimbing</li>
+                        <li>Draft hasil penelitian</li>
+                    </ul>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-box start"></div>
+                        <span>Mulai/Selesai</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box process"></div>
+                        <span>Proses</span>
+                    </div>
+                </div>
+
+                <div class="flowchart">
+                    <div class="flow-item">
+                        <div class="flow-box start">
+                            <span class="flow-number">1</span>
+                            <span class="flow-text">Mahasiswa mengajukan permohonan ujian hasil penelitian dengan melampirkan draft hasil</span>
+                            <div class="actor-label">👤 Mahasiswa</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">2</span>
+                            <span class="flow-text">Kajur/Koor memeriksa dokumen dan mengusulkan tim penguji hasil (sama dengan tim penguji proposal: 5 orang)</span>
+                            <div class="actor-label">🎓 Kajur/Koor Prodi</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">3</span>
+                            <span class="flow-text">POKJA Akademik memverifikasi dan meneruskan usulan ke KABAG</span>
+                            <div class="actor-label">📋 POKJA Akademik</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">4</span>
+                            <span class="flow-text">KABAG meneruskan ke Wadek Bidak untuk penerbitan SK</span>
+                            <div class="actor-label">👔 KABAG</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">5</span>
+                            <span class="flow-text">Wadek Bidak menerbitkan SK Tim Penguji Hasil (5 orang - sama dengan tim proposal) dan menetapkan jadwal ujian</span>
+                            <div class="actor-label">👨‍💼 Wadek Bidak</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">6</span>
+                            <span class="flow-text">POKJA Akademik menginformasikan jadwal ujian (minimal 3 hari sebelum pelaksanaan)</span>
+                            <div class="actor-label">📋 POKJA Akademik</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">7</span>
+                            <span class="flow-text">Mahasiswa melaksanakan ujian hasil dengan presentasi hasil penelitian dan pembahasan dengan tim penguji (5 orang)</span>
+                            <div class="actor-label">👤 Mahasiswa</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">8</span>
+                            <span class="flow-text">Tim penguji (5 orang) memberikan masukan dan penilaian terhadap hasil penelitian</span>
+                            <div class="actor-label">👥 Tim Penguji (5 orang)</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box end">
+                            <span class="flow-number">9</span>
+                            <span class="flow-text">Mahasiswa melakukan perbaikan hasil penelitian dan menyerahkan ke pembimbing untuk persetujuan melanjutkan penulisan skripsi lengkap</span>
+                            <div class="actor-label">👤 Mahasiswa</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <h4>⏱️ Waktu Proses</h4>
+                    <p>Maksimal 5 hari kerja untuk proses penerbitan SK</p>
+                </div>
+
+                <div class="note-box">
+                    ⚠️ Catatan: Tim penguji SAMA dengan tim ujian proposal untuk konsistensi pembimbingan
+                </div>
+            </div>
+
+            <!-- UJIAN SKRIPSI/TESIS -->
+            <div id="skripsi" class="flowchart-section">
+                <div class="tim-penguji-box">
+                    <h4>👥 Komposisi Tim Penguji (5 Orang - Sama dengan Tim Proposal & Hasil)</h4>
+                    <div class="tim-grid">
+                        <div class="tim-item">
+                            <div class="tim-number">1</div>
+                            <div class="tim-role">Ketua</div>
+                            <div class="tim-desc">Min. S3/Lektor atau S2/Lektor Kepala</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">2</div>
+                            <div class="tim-role">Sekretaris</div>
+                            <div class="tim-desc">Sesuai kualifikasi</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">3</div>
+                            <div class="tim-role">Penguji</div>
+                            <div class="tim-desc">Sesuai keahlian topik</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">4</div>
+                            <div class="tim-role">Pembimbing Utama</div>
+                            <div class="tim-desc">Pembimbing 1</div>
+                        </div>
+                        <div class="tim-item">
+                            <div class="tim-number">5</div>
+                            <div class="tim-role">Pembimbing Pendamping</div>
+                            <div class="tim-desc">Pembimbing 2</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px; text-align: center; color: #FF6600; font-weight: bold; font-style: italic;">
+                        ⚠️ Tim penguji SAMA dengan tim ujian proposal dan hasil untuk konsistensi pembimbingan
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h3>🎓 Syarat Ujian Skripsi/Tesis</h3>
+                    <ul>
+                        <li>IPK minimal 2,50</li>
+                        <li>Nilai D maksimal 2 mata kuliah</li>
+                        <li>Draft skripsi lengkap</li>
+                        <li>Transkrip nilai</li>
+                        <li>Kartu bimbingan</li>
+                        <li>Bebas pinjam perpustakaan fakultas dan universitas</li>
+                        <li>Sertifikat KKN</li>
+                        <li>Surat keterangan publikasi dari pembimbing</li>
+                    </ul>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-box start"></div>
+                        <span>Mulai/Selesai</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box process"></div>
+                        <span>Proses</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box end"></div>
+                        <span>Lulus</span>
+                    </div>
+                </div>
+
+                <div class="flowchart">
+                    <div class="flow-item">
+                        <div class="flow-box start">
+                            <span class="flow-number">1</span>
+                            <span class="flow-text">Mahasiswa mengajukan permohonan ujian skripsi dengan melampirkan seluruh persyaratan</span>
+                            <div class="actor-label">👤 Mahasiswa</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">2</span>
+                            <span class="flow-text">POKJA Akademik memverifikasi kelengkapan persyaratan administratif dan akademik</span>
+                            <div class="actor-label">📋 POKJA Akademik</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">3</span>
+                            <span class="flow-text">Kajur/Koor mengusulkan tim penguji skripsi (sama dengan tim penguji proposal dan hasil: 5 orang)</span>
+                            <div class="actor-label">🎓 Kajur/Koor Prodi</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">4</span>
+                            <span class="flow-text">KABAG meneliti dan menyetujui usulan, meneruskan ke Wadek Bidak</span>
+                            <div class="actor-label">👔 KABAG</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">5</span>
+                            <span class="flow-text">Wadek Bidak menerbitkan SK Tim Penguji Skripsi (5 orang - sama dengan tim proposal & hasil) dan menetapkan jadwal ujian sidang</span>
+                            <div class="actor-label">👨‍💼 Wadek Bidak</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">6</span>
+                            <span class="flow-text">POKJA Akademik menginformasikan jadwal ujian (minimal 7 hari sebelum pelaksanaan)</span>
+                            <div class="actor-label">📋 POKJA Akademik</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">7</span>
+                            <span class="flow-text">Mahasiswa melaksanakan ujian skripsi dengan mengenakan pakaian rapi (kemeja putih, celana/rok hitam, jas almamater)</span>
+                            <div class="actor-label">👤 Mahasiswa</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">8</span>
+                            <span class="flow-text">Tim penguji (5 orang) melakukan penilaian: Tata tulis (25%), Isi skripsi (30%), Kemampuan menguasai materi (45%)</span>
+                            <div class="actor-label">👥 Tim Penguji (5 orang)</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">9</span>
+                            <span class="flow-text">Ketua tim penguji mengumumkan hasil ujian (Lulus/Tidak Lulus) dan nilai rata-rata</span>
+                            <div class="actor-label">👥 Tim Penguji</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box">
+                            <span class="flow-number">10</span>
+                            <span class="flow-text">Mahasiswa yang lulus melakukan perbaikan skripsi dan menyerahkan lembar persetujuan yang ditandatangani semua penguji (5 orang)</span>
+                            <div class="actor-label">👤 Mahasiswa</div>
+                        </div>
+                    </div>
+
+                    <div class="arrow"></div>
+
+                    <div class="flow-item">
+                        <div class="flow-box end">
+                            <span class="flow-number">11</span>
+                            <span class="flow-text">POKJA Akademik mendokumentasikan hasil ujian dan berita acara untuk arsip jurusan dan fakultas</span>
+                            <div class="actor-label">📋 POKJA Akademik</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <h4>⏱️ Waktu Proses</h4>
+                    <p>Maksimal 7 hari kerja untuk proses penerbitan SK</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>📊 Komponen Penilaian</h4>
+                    <p>Tata Tulis: 25% | Isi Skripsi: 30% | Kemampuan Menguasai Materi: 45%</p>
+                </div>
+
+                <div class="note-box">
+                    ⚠️ Catatan: Tim penguji SAMA dengan tim ujian proposal dan hasil untuk konsistensi pembimbingan
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(section) {
+            const sections = document.querySelectorAll('.flowchart-section');
+            sections.forEach(s => s.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(t => t.classList.remove('active'));
+
+            document.getElementById(section).classList.add('active');
+            event.target.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const flowBoxes = document.querySelectorAll('.flow-box');
+
+            flowBoxes.forEach((box, index) => {
+                box.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
